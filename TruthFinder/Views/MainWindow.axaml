@@ -1,0 +1,85 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TruthFinder.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="TruthFinder.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Truth Finder">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    
+    <Grid Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Orientation="Horizontal"  IsEnabled="{Binding !IsLoading}">
+            <TextBlock Margin="6" Text="{Binding ModelName}" VerticalAlignment="Center"  /> 
+            <Button Margin="6" Content="Выбрать модель" VerticalAlignment="Center" Command="{Binding ChooseModel}"  />
+            
+            <ComboBox VerticalAlignment="Center" SelectedItem="{Binding SelectedPrompt}" Margin="6" Width="200" ItemsSource="{Binding ReadyToUsePrompts}"/>
+            <TextBox Margin="6" VerticalAlignment="Center" Width="600" TextWrapping="WrapWithOverflow" Text="{Binding PromptText}"/>
+        </StackPanel>
+        
+        <Grid Grid.Row="1"  IsEnabled="{Binding !IsLoading}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="6" Text="Ссылка на СМИ" VerticalAlignment="Center" /> 
+                <TextBox Text="{Binding InputUrlLeft}" Margin="6" VerticalAlignment="Center" Width="200"/>
+            </StackPanel>
+            <TextBlock Grid.Row="1" Margin="6" Text="Текст" VerticalAlignment="Center" /> 
+            <TextBox Grid.Row="2"  Margin="6" Text="{Binding InputLeft}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow"/>
+        </Grid>
+        
+        <Grid Grid.Column="1" Grid.Row="1" IsEnabled="{Binding !IsLoading}" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions> 
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="6" Text="Ссылка на СМИ" VerticalAlignment="Center" /> 
+                <TextBox Text="{Binding InputUrlRight}" Margin="6" VerticalAlignment="Center"  Width="200"/>
+            </StackPanel>
+            <TextBlock Grid.Row="1" Margin="6" Text="Текст" VerticalAlignment="Center" /> 
+            <TextBox Grid.Row="2"  Margin="6" Text="{Binding InputRight}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow"/>
+        </Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="2"  IsEnabled="{Binding !IsLoading}">
+            <Button Command="{Binding RunLLM}" Margin="6" Content="Получить ответ" VerticalAlignment="Center"  />
+        </StackPanel>
+        
+        
+        <Grid Grid.ColumnSpan="2" Grid.Row="3" IsEnabled="{Binding !IsLoading}" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions> 
+            
+            <TextBlock Grid.Row="0" Margin="6" Text="Вывод" VerticalAlignment="Center" /> 
+            <TextBox Grid.Row="1"  Margin="6" Text="{Binding Output}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        </Grid>
+        
+        <Grid IsVisible="{Binding IsLoading}" IsEnabled="{Binding IsLoading}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="AntiqueWhite">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Получаем ответ..."/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

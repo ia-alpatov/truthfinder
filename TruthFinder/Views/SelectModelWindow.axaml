@@ -1,0 +1,49 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TruthFinder.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Width="1000" Height="100"
+        x:Class="TruthFinder.Views.SelectModelWindow"
+        x:DataType="vm:SelectModelViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Truth Finder">
+
+    <Design.DataContext>
+        <vm:SelectModelViewModel/>
+    </Design.DataContext>
+    
+    <Grid Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Vertical" IsEnabled="{Binding !IsLoading}">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox SelectedItem="{Binding SelectedModel}" Margin="6" Width="200" ItemsSource="{Binding Models}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Command="{Binding Download}" Margin="6" Content="Загрузить модель" IsEnabled="{Binding !IsExist}" VerticalAlignment="Center"  />
+                
+                
+                <TextBlock Margin="6" VerticalAlignment="Center" Width="200" Text="Требования модели: "/>
+                <TextBlock Margin="6" VerticalAlignment="Center" Width="100" Text="{Binding SelectedModel.Requirements}"/>
+                
+                <Button Command="{Binding DeleteAll}" Margin="6" Content="Удалить все модели" VerticalAlignment="Center"  />
+                <Button Command="{Binding Close}" Margin="6" Content="Закрыть" VerticalAlignment="Center" HorizontalAlignment="Right"  />
+            </StackPanel>
+        </StackPanel>
+        
+        <Grid Grid.RowSpan="2" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}" IsEnabled="{Binding IsLoading}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="AntiqueWhite">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar  Margin="0 10" Height="20" 
+                              Minimum="0" Maximum="100" Value="{Binding ProgessValue}"
+                              ShowProgressText="True" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
